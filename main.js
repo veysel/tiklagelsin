@@ -3,10 +3,12 @@
 const config = require("./tools/config.json");
 const tools = require("./tools/tools");
 const inquirer = require('inquirer');
+const open = require('open');
 
 let selectedBrand = "";
 let selectedCategory = "";
 let selectedProduct = "";
+let selectedProductForDisplay = "";
 
 async function askBrand() {
     let brandList = await tools.getBrand();
@@ -68,7 +70,43 @@ async function askProduct() {
                 askCategory();
             }
             else {
-                selectedProduct = answersProduct.product;
+                selectedProductForDisplay = answersProduct.product;
+                selectedProduct = productList.find(x => x.name + " - " + x.price == answersProduct.product);
+                askGoToProduct();
+            }
+        });
+}
+
+async function askGoToProduct() {
+    let productUrl = await tools.getProductUrl(selectedBrand, selectedCategory, selectedProduct.name);
+    let productImageUrl = await tools.getProductImageUrl(selectedBrand, selectedCategory, selectedProduct.name);
+
+    inquirer
+        .prompt([
+            {
+                type: 'list',
+                name: 'product',
+                message: config.productDetailText,
+                choices: [config.backText, config.goToProductText, config.goToProductImageText, config.exit],
+            },
+        ])
+        .then(answersProduct => {
+            if (answersProduct.product == config.backText) {
+                console.clear();
+                askProduct();
+            }
+            else if (answersProduct.product == config.goToProductText) {
+                open(productUrl);
+                console.clear();
+                askGoToProduct();
+            }
+            else if (answersProduct.product == config.goToProductImageText) {
+                open(productImageUrl);
+                console.clear();
+                askGoToProduct();
+            }
+            else if (answersProduct.product == config.exit) {
+
             }
         });
 }

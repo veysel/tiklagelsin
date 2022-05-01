@@ -1,7 +1,13 @@
 {
     "baseUrl": "https://tiklagelsin.com",
+    "brandDataUrl": "https://tiklagelsin.com/page-data{brand}/page-data.json",
+    "productUrl": "https://www.tiklagelsin.com/a/cproduct?brandId={brandId}&productId={productId}",
     "backText": "<-- Geri",
     "brandText": "Marka?",
     "categoryText": "Kategori?",
-    "productText": "Ürün?"
+    "productText": "Ürün?",
+    "productDetailText": "Ürün Seçenekleri?",
+    "goToProductText": "Ürüne Git",
+    "goToProductImageText": "Ürün Fotoğrafına Git",
+    "exit": "Çıkış"
 }

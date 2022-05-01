@@ -75,8 +75,50 @@ async function getProduct(brand, category) {
     }
 }
 
+async function getProductUrl(brand, category, product) {
+    try {
+        const { data } = await axios.get(config.brandDataUrl.replace("{brand}", brand));
+
+        let brandId = data?.result?.data?.allApiProduct?.nodes[0]?.brandId;
+        let categoryList = data?.result?.data?.allApiProduct?.nodes[0]?.products.find(x => x.categoryName == category)?.subcategories;
+
+        let productList = [];
+        categoryList.forEach(element => {
+            productList.push(...element.products);
+        });
+
+        let productId = productList.find(x => x.name == product).value;
+        let productUrl = config.productUrl.replace("{brandId}", brandId).replace("{productId}", productId);
+
+        return productUrl;
+    } catch (err) {
+        return config.baseUrl;
+    }
+}
+
+async function getProductImageUrl(brand, category, product) {
+    try {
+        const { data } = await axios.get(config.brandDataUrl.replace("{brand}", brand));
+        
+        let categoryList = data?.result?.data?.allApiProduct?.nodes[0]?.products.find(x => x.categoryName == category)?.subcategories;
+
+        let productList = [];
+        categoryList.forEach(element => {
+            productList.push(...element.products);
+        });
+
+        let productImageUrl = productList.find(x => x.name == product).productImage.Media.Url;
+
+        return productImageUrl;
+    } catch (err) {
+        return config.baseUrl;
+    }
+}
+
 module.exports = {
     getBrand: getBrand,
     getCategory: getCategory,
-    getProduct: getProduct
+    getProduct: getProduct,
+    getProductUrl: getProductUrl,
+    getProductImageUrl: getProductImageUrl
 }
