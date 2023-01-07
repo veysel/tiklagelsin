@@ -7,6 +7,7 @@
     "tiklagelsin": "main.js"
   },
   "scripts": {
+    "start": "node ./main.js",
     "test": "nyc mocha",
     "test-coverage": "nyc --reporter=lcov mocha",
     "coverage": "codecov"

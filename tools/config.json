@@ -1,7 +1,7 @@
 {
     "baseUrl": "https://tiklagelsin.com",
     "brandDataUrl": "https://tiklagelsin.com/page-data{brand}/page-data.json",
-    "productUrl": "https://www.tiklagelsin.com/a/cproduct?brandId={brandId}&productId={productId}",
+    "productUrl": "https://www.tiklagelsin.com/urun-detay/{productId}",
     "backText": "<-- Geri",
     "brandText": "Marka?",
     "categoryText": "Kategori?",

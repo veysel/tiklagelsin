@@ -52,23 +52,22 @@ async function getCategory(brand) {
 
 async function getProduct(brand, category) {
     try {
-        const { data } = await axios.get(config.baseUrl + brand);
-        const $ = cheerio.load(data);
-
-        const listItems = $(".product-card-body");
+        const { data } = await axios.get(config.brandDataUrl.replace("{brand}", brand));
+        let categoryList = data?.result?.data?.allApiProduct?.nodes[0]?.products.find(x => x.categoryName == category)?.subcategories;
 
         let listProduct = [];
-        listItems.each((idx, el) => {
-            let product = new ProductModel(
-                $(el).parent().parent().parent().parent().parent().parent().attr("title") || $(el).parent().parent().parent().parent().parent().attr("title"),
-                $(el).children(".product-content").text(),
-                $(el).children(".bottom-wrapper").children("span").children("span").html()
-            );
-
-            listProduct.push(product);
+        categoryList.forEach(elementCategory => {
+            elementCategory?.products?.forEach(elementProduct => {
+                let product = new ProductModel(
+                    category,
+                    elementProduct?.name,
+                    elementProduct?.price
+                );
+    
+                listProduct.push(product);
+            });
         });
 
-        listProduct = listProduct.filter(x => x.category == category);
         return listProduct;
     } catch (err) {
         return [];
@@ -99,7 +98,7 @@ async function getProductUrl(brand, category, product) {
 async function getProductImageUrl(brand, category, product) {
     try {
         const { data } = await axios.get(config.brandDataUrl.replace("{brand}", brand));
-        
+
         let categoryList = data?.result?.data?.allApiProduct?.nodes[0]?.products.find(x => x.categoryName == category)?.subcategories;
 
         let productList = [];

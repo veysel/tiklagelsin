@@ -61,7 +61,7 @@ async function askProduct() {
                 type: 'list',
                 name: 'product',
                 message: config.productText,
-                choices: [config.backText, ...productList.map(x => x.name + " - " + x.price)],
+                choices: [config.backText, ...productList.map(x => x.name + " - " + x.price + " TL")],
             },
         ])
         .then(answersProduct => {
@@ -71,7 +71,7 @@ async function askProduct() {
             }
             else {
                 selectedProductForDisplay = answersProduct.product;
-                selectedProduct = productList.find(x => x.name + " - " + x.price == answersProduct.product);
+                selectedProduct = productList.find(x => x.name + " - " + x.price + " TL" == answersProduct.product);
                 askGoToProduct();
             }
         });
